@@ -1,0 +1,247 @@
+# PocketPilot Detekt configuration.
+#
+# Layered on top of Detekt's default rules (buildUponDefaultConfig = true) and
+# encodes the code-quality bar for Phase 20:
+#   1. Formatting is owned by Ktlint, so overlap here stays light.
+#   2. Complexity, function/parameter/class-size ceilings are enforced hard.
+#   3. Coroutine / lifecycle memory-leak patterns are flagged.
+#   4. Cross-feature architectural imports are forbidden (feature.X should not
+#      reach into feature.Y.data). Presentation is still allowed to use Compose
+#      / Android; the domain layer's Android-freedom is enforced by convention
+#      + code review because this project is a single Gradle module.
+
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: false
+  checkExhaustiveness: false
+
+processors:
+  active: true
+
+console-reports:
+  active: true
+  exclude:
+    - 'ProjectStatisticsReport'
+    - 'ComplexityReport'
+    - 'NotificationReport'
+    - 'FindingsReport'
+    - 'FileBasedFindingsReport'
+
+output-reports:
+  active: true
+
+# ---- Complexity: hard ceilings so no god-function creeps in ----
+complexity:
+  active: true
+  CognitiveComplexMethod:
+    active: true
+    threshold: 15
+  ComplexCondition:
+    active: true
+    threshold: 4
+  ComplexInterface:
+    active: false
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+    ignoreSingleWhenExpression: true
+    ignoreSimpleWhenEntries: true
+  LargeClass:
+    active: true
+    threshold: 600
+  LongMethod:
+    active: true
+    threshold: 60
+  LongParameterList:
+    active: true
+    functionThreshold: 8
+    constructorThreshold: 10
+    ignoreDefaultParameters: true
+    ignoreDataClasses: true
+    ignoreAnnotatedParameter:
+      - 'javax.inject.Inject'
+      - 'dagger.assisted.AssistedInject'
+      - 'androidx.compose.runtime.Composable'
+  NestedBlockDepth:
+    active: true
+    threshold: 4
+  TooManyFunctions:
+    active: false
+
+# ---- Coroutines: potential memory-leak / lifecycle-scope patterns ----
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
+    active: true
+  InjectDispatcher:
+    active: false
+  RedundantSuspendModifier:
+    active: true
+  SleepInsteadOfDelay:
+    active: true
+  SuspendFunWithFlowReturnType:
+    active: true
+
+# ---- Exceptions: catch-alls hide bugs ----
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: true
+    exceptionNames:
+      - 'Error'
+      - 'Throwable'
+  SwallowedException:
+    active: true
+    ignoredExceptionTypes:
+      - 'InterruptedException'
+      - 'MalformedURLException'
+      - 'NumberFormatException'
+      - 'ParseException'
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: true
+
+# ---- Naming ----
+naming:
+  active: true
+  ClassNaming:
+    active: true
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-9]*|[A-Z][a-zA-Z0-9]*'
+    excludes: ['**/test/**', '**/androidTest/**']
+  FunctionParameterNaming:
+    active: true
+  MatchingDeclarationName:
+    active: true
+  PackageNaming:
+    active: true
+    packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: '[A-Z][_A-Z0-9]*'
+  VariableNaming:
+    active: true
+
+# ---- Potential-bugs ----
+potential-bugs:
+  active: true
+  CastToNullableType:
+    active: true
+  Deprecation:
+    active: true
+  DontDowncastCollectionTypes:
+    active: true
+  DoubleMutabilityForCollection:
+    active: true
+  ElseCaseInsteadOfExhaustiveWhen:
+    active: false
+  ExitOutsideMain:
+    active: true
+  IgnoredReturnValue:
+    active: true
+  ImplicitDefaultLocale:
+    active: true
+  ImplicitUnitReturnType:
+    active: true
+  MissingPackageDeclaration:
+    active: true
+  NullCheckOnMutableProperty:
+    active: true
+  UnnecessaryNotNullOperator:
+    active: true
+  UnnecessarySafeCall:
+    active: true
+  UnreachableCatchBlock:
+    active: true
+  UnreachableCode:
+    active: true
+  UnsafeCallOnNullableType:
+    active: false
+  UnsafeCast:
+    active: true
+  UnusedUnaryOperator:
+    active: true
+  UselessPostfixExpression:
+    active: true
+  WrongEqualsTypeParameter:
+    active: true
+
+# ---- Performance ----
+performance:
+  active: true
+  ArrayPrimitive:
+    active: true
+  CouldBeSequence:
+    active: true
+    threshold: 3
+  ForEachOnRange:
+    active: true
+  SpreadOperator:
+    active: true
+  UnnecessaryPartOfBinaryExpression:
+    active: true
+  UnnecessaryTemporaryInstantiation:
+    active: true
+
+# ---- Style (light; Ktlint owns formatting) ----
+style:
+  active: true
+  MagicNumber:
+    active: false
+  ReturnCount:
+    active: true
+    max: 4
+    excludeLabeled: true
+    excludeReturnFromLambda: true
+    excludeGuardClauses: true
+  ThrowsCount:
+    active: true
+    max: 2
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: true
+  WildcardImport:
+    active: true
+    excludeImports:
+      - 'java.util.*'
+  ForbiddenImport:
+    # ForbiddenImport applies globally, so cross-feature architectural rules
+    # (e.g. "no reach into feature.X.data") can't be scoped to specific paths
+    # without splitting into Gradle modules or writing a custom rule. Kept
+    # active with an empty list so any future globally-forbidden import can
+    # be added here without re-enabling the rule.
+    active: true
+    imports: []
+  ForbiddenMethodCall:
+    active: true
+    methods:
+      - reason: 'GlobalScope leaks references beyond any lifecycle; inject a scope instead.'
+        value: 'kotlinx.coroutines.GlobalScope'
+      - reason: 'Runtime.exec spawns arbitrary processes; forbidden.'
+        value: 'java.lang.Runtime.exec'
+
+# ---- Empty-blocks ----
+empty-blocks:
+  active: true
+  EmptyCatchBlock:
+    active: true
+  EmptyFunctionBlock:
+    active: true
+    ignoreOverridden: true
+
+# ---- Comments (documentation not enforced for internal APIs) ----
+comments:
+  active: true
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  UndocumentedPublicProperty:
+    active: false

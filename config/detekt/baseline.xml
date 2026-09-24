@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CognitiveComplexMethod:DonutChart.kt$@Composable fun DonutChart( slices: List&lt;DonutSlice&gt;, modifier: Modifier = Modifier, centerLabel: String? = null, centerValue: String? = null, trackColor: Color = MaterialTheme.colorScheme.surfaceVariant )</ID>
+    <ID>CognitiveComplexMethod:LockScreen.kt$@Composable fun LockScreen(state: LockState, onEvent: (LockEvent) -&gt; Unit)</ID>
+    <ID>CognitiveComplexMethod:TransactionFilterSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionFilterSheet(state: TransactionListState, onEvent: (TransactionListEvent) -&gt; Unit)</ID>
+    <ID>CognitiveComplexMethod:TrendLineChart.kt$@Composable fun TrendLineChart( labels: List&lt;String&gt;, series: List&lt;LineSeries&gt;, modifier: Modifier = Modifier, chartHeight: Dp = 180.dp, gridColor: Color = MaterialTheme.colorScheme.outlineVariant, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant )</ID>
+    <ID>ComplexCondition:BudgetFormViewModel.kt$BudgetFormViewModel$nameError != null || limitError != null || categoryError != null || dateError != null</ID>
+    <ID>ComplexCondition:SavingsGoalFormViewModel.kt$SavingsGoalFormViewModel$nameError != null || targetError != null || noteError != null || dateError != null</ID>
+    <ID>ComplexCondition:SignUpViewModel.kt$SignUpViewModel$nameError != null || emailError != null || passwordError != null || confirmError != null</ID>
+    <ID>ImplicitDefaultLocale:AnalyticsOverviewScreen.kt$String.format("%.0f%%", rate * 100f)</ID>
+    <ID>ImplicitDefaultLocale:CategoryBreakdownScreen.kt$String.format("%.0f%%", share.share * 100f)</ID>
+    <ID>LongMethod:AuthNavHost.kt$@Composable fun AuthNavHost(onAuthenticated: () -&gt; Unit)</ID>
+    <ID>LongMethod:BudgetDetailScreen.kt$@Composable private fun BudgetDetailBody(progress: BudgetProgress)</ID>
+    <ID>LongMethod:BudgetFormScreen.kt$@Composable private fun FormBody(state: BudgetFormState, onEvent: (BudgetFormEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:BudgetListScreen.kt$@Composable internal fun BudgetRow(progress: BudgetProgress, onClick: () -&gt; Unit)</ID>
+    <ID>LongMethod:CurrencySelectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CurrencySelectorRoute(viewModel: SettingsViewModel, onNavigateBack: () -&gt; Unit)</ID>
+    <ID>LongMethod:DashboardNavHost.kt$@Composable fun HomeNavHost()</ID>
+    <ID>LongMethod:DataManagementScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DataManagementRoute(viewModel: SettingsViewModel, onNavigateBack: () -&gt; Unit)</ID>
+    <ID>LongMethod:DonutChart.kt$@Composable fun DonutChart( slices: List&lt;DonutSlice&gt;, modifier: Modifier = Modifier, centerLabel: String? = null, centerValue: String? = null, trackColor: Color = MaterialTheme.colorScheme.surfaceVariant )</ID>
+    <ID>LongMethod:ForgotPasswordScreen.kt$@Composable fun ForgotPasswordScreen(state: ForgotPasswordState, onEvent: (ForgotPasswordEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:GroupedBarChart.kt$@Composable fun GroupedBarChart( groups: List&lt;BarGroup&gt;, modifier: Modifier = Modifier, chartHeight: Dp = 200.dp, gridColor: Color = MaterialTheme.colorScheme.outlineVariant, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant )</ID>
+    <ID>LongMethod:LockScreen.kt$@Composable fun LockScreen(state: LockState, onEvent: (LockEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:LoginScreen.kt$@Composable fun LoginScreen(state: LoginState, onEvent: (LoginEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:ResetPasswordScreen.kt$@Composable fun ResetPasswordScreen(state: ResetPasswordState, onEvent: (ResetPasswordEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:SavingsGoalDetailScreen.kt$@Composable private fun DetailBody(progress: SavingsGoalProgress, isMarkingComplete: Boolean, onEvent: (SavingsGoalDetailEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:SavingsGoalDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SavingsGoalDetailScreen( state: SavingsGoalDetailState, snackbarHostState: SnackbarHostState, onEvent: (SavingsGoalDetailEvent) -&gt; Unit )</ID>
+    <ID>LongMethod:SavingsGoalFormScreen.kt$@Composable private fun FormBody(state: SavingsGoalFormState, onEvent: (SavingsGoalFormEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:SavingsGoalListScreen.kt$@Composable internal fun SavingsGoalRow(progress: SavingsGoalProgress, onClick: () -&gt; Unit)</ID>
+    <ID>LongMethod:SignUpScreen.kt$@Composable fun SignUpScreen(state: SignUpState, onEvent: (SignUpEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:TransactionFilterSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionFilterSheet(state: TransactionListState, onEvent: (TransactionListEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:TransactionFormScreen.kt$@Composable private fun FormBody(state: TransactionFormState, onEvent: (TransactionFormEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionListScreen(state: TransactionListState, onEvent: (TransactionListEvent) -&gt; Unit)</ID>
+    <ID>LongMethod:TrendLineChart.kt$@Composable fun TrendLineChart( labels: List&lt;String&gt;, series: List&lt;LineSeries&gt;, modifier: Modifier = Modifier, chartHeight: Dp = 180.dp, gridColor: Color = MaterialTheme.colorScheme.outlineVariant, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant )</ID>
+    <ID>LongParameterList:SavingsGoalDetailScreen.kt$( mode: ContributionMode, input: String, error: String?, isSubmitting: Boolean, currencyCode: String, onInputChange: (String) -&gt; Unit, onConfirm: () -&gt; Unit, onDismiss: () -&gt; Unit )</ID>
+    <ID>LoopWithTooManyJumpStatements:CalculateBudgetSpentUseCase.kt$CalculateBudgetSpentUseCase$for</ID>
+    <ID>LoopWithTooManyJumpStatements:CalculateCategoryDistributionUseCase.kt$CalculateCategoryDistributionUseCase$for</ID>
+    <ID>LoopWithTooManyJumpStatements:CalculateSpendingByCategoryUseCase.kt$CalculateSpendingByCategoryUseCase$for</ID>
+    <ID>LoopWithTooManyJumpStatements:CalculateTrendSeriesUseCase.kt$CalculateTrendSeriesUseCase$for</ID>
+    <ID>MatchingDeclarationName:AnalyticsNavHost.kt$AnalyticsDestination</ID>
+    <ID>MatchingDeclarationName:AuthError.kt$AuthException : Exception</ID>
+    <ID>MatchingDeclarationName:AuthNavHost.kt$AuthDestination</ID>
+    <ID>MatchingDeclarationName:BudgetNavHost.kt$BudgetDestination</ID>
+    <ID>MatchingDeclarationName:DashboardNavHost.kt$HomeDestination</ID>
+    <ID>MatchingDeclarationName:DonutChart.kt$DonutSlice</ID>
+    <ID>MatchingDeclarationName:GroupedBarChart.kt$BarGroup</ID>
+    <ID>MatchingDeclarationName:SavingsNavHost.kt$SavingsDestination</ID>
+    <ID>MatchingDeclarationName:SettingsNavHost.kt$SettingsDestination</ID>
+    <ID>MatchingDeclarationName:TransactionNavHost.kt$TransactionDestination</ID>
+    <ID>MatchingDeclarationName:TrendLineChart.kt$LineSeries</ID>
+    <ID>SwallowedException:BudgetSyncEngine.kt$BudgetSyncEngine$client: NetworkException.ClientError</ID>
+    <ID>SwallowedException:SavingsGoalSyncEngine.kt$SavingsGoalSyncEngine$client: NetworkException.ClientError</ID>
+    <ID>SwallowedException:TransactionSyncEngine.kt$TransactionSyncEngine$client: NetworkException.ClientError</ID>
+    <ID>TooGenericExceptionCaught:AuthRepositoryImpl.kt$AuthRepositoryImpl$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:Result.kt$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SafeApiCall.kt$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SyncManager.kt$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SyncWorker.kt$BaseSyncWorker$t: Throwable</ID>
+    <ID>UnusedPrivateMember:BudgetProgressIndicator.kt$@Preview @Composable private fun BudgetProgressIndicatorExceededPreview()</ID>
+    <ID>UnusedPrivateMember:BudgetProgressIndicator.kt$@Preview @Composable private fun BudgetProgressIndicatorOnTrackPreview()</ID>
+    <ID>UnusedPrivateMember:BudgetProgressIndicator.kt$@Preview @Composable private fun BudgetProgressIndicatorWarningPreview()</ID>
+    <ID>UnusedPrivateMember:CurrencyCard.kt$@Preview @Composable private fun CurrencyCardIncomePreview()</ID>
+    <ID>UnusedPrivateMember:CurrencyCard.kt$@Preview @Composable private fun CurrencyCardPreview()</ID>
+    <ID>UnusedPrivateMember:ErrorState.kt$@Preview @Composable private fun ErrorStatePreview()</ID>
+    <ID>UnusedPrivateMember:PocketPilotButton.kt$@Preview @Composable private fun PrimaryButtonPreview()</ID>
+    <ID>UnusedPrivateMember:PocketPilotButton.kt$@Preview @Composable private fun SecondaryButtonPreview()</ID>
+    <ID>UnusedPrivateMember:PocketPilotTextField.kt$@Preview @Composable private fun TextFieldErrorPreview()</ID>
+    <ID>UnusedPrivateMember:PocketPilotTextField.kt$@Preview @Composable private fun TextFieldPreview()</ID>
+    <ID>UnusedPrivateMember:WelcomeScreen.kt$@Preview @Composable private fun WelcomeScreenPreview()</ID>
+    <ID>UnusedPrivateProperty:Color.kt$private val Slate20 = Color(0xFF1B2124)</ID>
+    <ID>UnusedPrivateProperty:Color.kt$private val Teal20 = Color(0xFF003737)</ID>
+  </CurrentIssues>
+</SmellBaseline>

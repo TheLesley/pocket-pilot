@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PocketPilot Android Lint configuration.
+
+  Severity choices reflect Phase 20 policy:
+    * Accessibility issues surface loudly. Missing content descriptions and
+      unlabelled form fields are hard errors because they block screen-reader
+      users.
+    * Hard-coded UI strings are errors so future localisation is not blocked.
+    * Unused-resource / translation warnings are kept as warnings so we can
+      knock them out incrementally without gating the build.
+    * Compose-specific checks are informational because the project is
+      Compose-only and the historical XML rules don't apply.
+-->
+<lint>
+    <!-- Accessibility (WCAG-adjacent) -->
+    <issue id="ContentDescription" severity="error"/>
+    <issue id="LabelFor" severity="error"/>
+    <issue id="ClickableViewAccessibility" severity="error"/>
+    <issue id="KeyboardInaccessibleWidget" severity="warning"/>
+
+    <!-- Correctness -->
+    <issue id="StopShip" severity="error"/>
+    <issue id="HardcodedText" severity="error"/>
+    <issue id="Range" severity="error"/>
+    <issue id="MissingPermission" severity="error"/>
+    <issue id="WrongViewCast" severity="error"/>
+
+    <!-- Resource hygiene (warnings; addressed incrementally) -->
+    <issue id="UnusedResources" severity="warning"/>
+    <issue id="UnusedIds" severity="warning"/>
+    <issue id="MissingTranslation" severity="warning"/>
+    <issue id="ExtraTranslation" severity="warning"/>
+    <issue id="IconMissingDensityFolder" severity="informational"/>
+
+    <!-- Not useful in a Compose-only app -->
+    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
+    <issue id="MissingDefaultResource" severity="ignore"/>
+</lint>

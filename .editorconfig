@@ -1,0 +1,30 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+# Ktlint 1.x configuration for PocketPilot (Phase 20: Code Quality).
+# Enforces the Android Studio Kotlin style guide with a slightly relaxed line
+# length that lines up with detekt's MaxLineLength rule (140 chars).
+ktlint_code_style = android_studio
+max_line_length = 140
+ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+
+# Disable a couple of rules that fight Compose idioms or that fight the ktlint
+# formatter's own output (auto-format writes trailing commas; the "unnecessary
+# trailing comma" rule then reports them — pick one and stick with it).
+ktlint_standard_function-naming = disabled
+ktlint_standard_property-naming = disabled
+ktlint_standard_backing-property-naming = disabled
+ktlint_standard_filename = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+
+[*.{xml,yml,yaml,json,md,gradle,gradle.kts}]
+indent_size = 4
