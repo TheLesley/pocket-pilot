@@ -1,10 +1,12 @@
 package com.example.pocketpilot.feature.auth.di
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.pocketpilot.feature.auth.data.local.InMemoryAuthTokenStore
+import com.example.pocketpilot.feature.auth.data.local.LocalAuthDataSource
+import com.example.pocketpilot.feature.auth.data.local.dao.AccountDao
 import com.example.pocketpilot.feature.auth.data.remote.AuthRemoteDataSource
-import com.example.pocketpilot.feature.auth.data.remote.FakeAuthRemoteDataSource
 import com.example.pocketpilot.feature.auth.data.repository.AuthRepositoryImpl
 import com.example.pocketpilot.feature.auth.domain.repository.AuthRepository
 import com.example.pocketpilot.feature.auth.domain.repository.AuthTokenStore
@@ -18,6 +20,7 @@ import com.example.pocketpilot.feature.auth.presentation.forgotpassword.ForgotPa
 import com.example.pocketpilot.feature.auth.presentation.login.LoginViewModel
 import com.example.pocketpilot.feature.auth.presentation.resetpassword.ResetPasswordViewModel
 import com.example.pocketpilot.feature.auth.presentation.signup.SignUpViewModel
+import com.example.pocketpilot.feature.finance.di.FinanceContainer
 
 /**
  * Lightweight service locator that assembles the auth graph.
@@ -29,8 +32,31 @@ import com.example.pocketpilot.feature.auth.presentation.signup.SignUpViewModel
  */
 object AuthContainer {
 
+    @Volatile
+    private var accountDao: AccountDao? = null
+
+    /**
+     * Wires the auth graph against the shared Room database. Must be called
+     * before any use case or repository is touched — [FinanceContainer.init]
+     * is invoked here defensively so tests and code paths that only touch the
+     * auth container still boot the underlying storage.
+     */
+    fun init(context: Context) {
+        if (accountDao != null) return
+        synchronized(this) {
+            if (accountDao != null) return
+            FinanceContainer.init(context)
+            accountDao = FinanceContainer.accountDao
+        }
+    }
+
     private val tokenStore: AuthTokenStore by lazy { InMemoryAuthTokenStore() }
-    private val remoteDataSource: AuthRemoteDataSource by lazy { FakeAuthRemoteDataSource() }
+    private val remoteDataSource: AuthRemoteDataSource by lazy {
+        val dao = checkNotNull(accountDao) {
+            "AuthContainer.init(context) must be called before accessing auth use cases."
+        }
+        LocalAuthDataSource(accountDao = dao)
+    }
     val repository: AuthRepository by lazy {
         AuthRepositoryImpl(remote = remoteDataSource, tokenStore = tokenStore)
     }

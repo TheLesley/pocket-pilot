@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
@@ -55,7 +57,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.pocketpilot.core.designsystem.component.CurrencyCard
 import com.example.pocketpilot.core.designsystem.component.ErrorState
 import com.example.pocketpilot.core.designsystem.theme.PocketPilotTheme
 import com.example.pocketpilot.core.ui.UiState
@@ -65,8 +66,6 @@ import com.example.pocketpilot.feature.finance.domain.model.Transaction
 import com.example.pocketpilot.feature.finance.domain.model.TransactionType
 import com.example.pocketpilot.feature.finance.presentation.util.DateFormatter
 import com.example.pocketpilot.feature.finance.presentation.util.MoneyFormatter
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.util.Currency
 import java.util.Locale
 
@@ -185,17 +184,63 @@ private fun DashboardContent(summary: DashboardSummary, onEvent: (DashboardEvent
 
 @Composable
 private fun BalanceCard(summary: DashboardSummary) {
-    CurrencyCard(
-        label = "Current balance",
-        amount = summary.currentBalanceMinorUnits.toMajor(summary.currencyCode),
-        currencyCode = summary.currencyCode,
-        amountColor = if (summary.currentBalanceMinorUnits >= 0L) {
-            PocketPilotTheme.extendedColors.income
-        } else {
-            PocketPilotTheme.extendedColors.expense
-        },
-        caption = "All time"
+    val amountColor = if (summary.currentBalanceMinorUnits >= 0L) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        PocketPilotTheme.extendedColors.expense
+    }
+    val gradient = Brush.linearGradient(
+        colors = listOf(
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+            MaterialTheme.colorScheme.surface,
+            MaterialTheme.colorScheme.surface
+        )
     )
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(gradient)
+                .border(
+                    width = 1.dp,
+                    color = PocketPilotTheme.extendedColors.border,
+                    shape = MaterialTheme.shapes.large
+                )
+                .padding(
+                    horizontal = PocketPilotTheme.spacing.lg,
+                    vertical = PocketPilotTheme.spacing.lg
+                )
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.xs)) {
+                Text(
+                    text = "Current balance",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = PocketPilotTheme.extendedColors.textSecondary
+                )
+                Text(
+                    text = MoneyFormatter.format(
+                        summary.currentBalanceMinorUnits,
+                        summary.currencyCode
+                    ),
+                    style = MaterialTheme.typography.displaySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = amountColor
+                )
+                Text(
+                    text = "All time",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = PocketPilotTheme.extendedColors.textSecondary
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -203,20 +248,80 @@ private fun MonthlyTotalsRow(summary: DashboardSummary) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.md)
     ) {
-        CurrencyCard(
+        MonthlyTotalCard(
             label = "Income this month",
-            amount = summary.monthlyIncomeMinorUnits.toMajor(summary.currencyCode),
-            currencyCode = summary.currencyCode,
-            amountColor = PocketPilotTheme.extendedColors.income,
+            amountText = MoneyFormatter.format(
+                summary.monthlyIncomeMinorUnits,
+                summary.currencyCode
+            ),
+            icon = Icons.Default.KeyboardArrowDown,
+            accent = PocketPilotTheme.extendedColors.income,
             modifier = Modifier.weight(1f)
         )
-        CurrencyCard(
+        MonthlyTotalCard(
             label = "Expenses this month",
-            amount = summary.monthlyExpenseMinorUnits.toMajor(summary.currencyCode),
-            currencyCode = summary.currencyCode,
-            amountColor = PocketPilotTheme.extendedColors.expense,
+            amountText = MoneyFormatter.format(
+                summary.monthlyExpenseMinorUnits,
+                summary.currencyCode
+            ),
+            icon = Icons.Default.KeyboardArrowUp,
+            accent = PocketPilotTheme.extendedColors.expense,
             modifier = Modifier.weight(1f)
         )
+    }
+}
+
+@Composable
+private fun MonthlyTotalCard(
+    label: String,
+    amountText: String,
+    icon: ImageVector,
+    accent: Color,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = PocketPilotTheme.extendedColors.border,
+                    shape = MaterialTheme.shapes.large
+                )
+                .padding(PocketPilotTheme.spacing.md),
+            verticalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.sm)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(accent.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = accent
+                )
+            }
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = PocketPilotTheme.extendedColors.textSecondary
+            )
+            Text(
+                text = amountText,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = accent
+            )
+        }
     }
 }
 
@@ -306,7 +411,7 @@ private fun QuickActionsRow(onEvent: (DashboardEvent) -> Unit) {
             QuickActionButton(
                 label = "Transfer",
                 icon = Icons.Default.Refresh,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = PocketPilotTheme.extendedColors.transfer,
                 onClick = { onEvent(DashboardEvent.TransferClicked) },
                 modifier = Modifier.weight(1f)
             )
@@ -385,6 +490,7 @@ private fun SpendingBreakdownCard(summary: DashboardSummary) {
 
 @Composable
 private fun CategoryRow(spend: CategorySpend, currencyCode: String) {
+    val accent = categoryColorFor(spend)
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.xxs)
@@ -394,24 +500,53 @@ private fun CategoryRow(spend: CategorySpend, currencyCode: String) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = spend.label,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.xs)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(accent)
+                )
+                Text(
+                    text = spend.label,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
             Text(
                 text = MoneyFormatter.format(spend.amountMinorUnits, currencyCode),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
         LinearProgressIndicator(
             progress = { spend.share.coerceIn(0f, 1f) },
+            color = accent,
+            trackColor = accent.copy(alpha = 0.16f),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(6.dp)
                 .clip(RoundedCornerShape(3.dp))
         )
+    }
+}
+
+@Composable
+private fun categoryColorFor(spend: CategorySpend): Color {
+    val ext = PocketPilotTheme.extendedColors
+    val key = (spend.categoryId ?: spend.label).lowercase(Locale.getDefault())
+    return when {
+        listOf("food", "dining", "grocer", "restaurant").any { it in key } -> ext.categoryFood
+        listOf("transport", "transit", "travel", "fuel", "uber", "taxi").any { it in key } -> ext.categoryTransport
+        listOf("shop", "cloth", "retail").any { it in key } -> ext.categoryShopping
+        listOf("bill", "util", "rent", "insurance").any { it in key } -> ext.categoryBills
+        listOf("entertain", "media", "subscription", "movie", "music").any { it in key } -> ext.categoryEntertainment
+        else -> ext.categoryOther
     }
 }
 
@@ -513,24 +648,28 @@ private fun RecentTransactionRow(transaction: Transaction, onClick: () -> Unit) 
             horizontalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.md)
         ) {
             TypeDot(type = transaction.type)
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(PocketPilotTheme.spacing.xxs)
+            ) {
                 Text(
                     text = transaction.title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = DateFormatter.formatShort(transaction.occurredAtEpochMillis) +
                         (transaction.categoryId?.let { " • $it" } ?: ""),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = PocketPilotTheme.extendedColors.textSecondary
                 )
             }
             Text(
                 text = signedAmount(transaction),
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 color = amountColor(transaction.type),
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Bold
             )
         }
     }
@@ -556,14 +695,6 @@ private fun signedAmount(transaction: Transaction): String {
     val amount = MoneyFormatter.format(transaction.amountMinorUnits, transaction.currencyCode)
     val prefix = if (transaction.type == TransactionType.INCOME) "+" else "-"
     return "$prefix$amount"
-}
-
-private fun Long.toMajor(currencyCode: String): BigDecimal {
-    val fractionDigits = runCatching { Currency.getInstance(currencyCode).defaultFractionDigits }
-        .getOrNull()
-        ?.coerceAtLeast(0)
-        ?: 2
-    return BigDecimal(this).movePointLeft(fractionDigits).setScale(fractionDigits, RoundingMode.HALF_UP)
 }
 
 private fun zeroedSummary(): DashboardSummary = DashboardSummary(

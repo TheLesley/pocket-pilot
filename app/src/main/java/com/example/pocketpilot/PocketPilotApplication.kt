@@ -2,6 +2,7 @@ package com.example.pocketpilot
 
 import android.app.Application
 import androidx.work.Configuration
+import com.example.pocketpilot.feature.auth.di.AuthContainer
 import com.example.pocketpilot.feature.finance.di.FinanceContainer
 import com.example.pocketpilot.feature.finance.di.SyncWorkContainer
 import com.example.pocketpilot.feature.notifications.di.NotificationsContainer
@@ -44,6 +45,7 @@ class PocketPilotApplication :
     override fun onCreate() {
         super.onCreate()
         FinanceContainer.init(applicationContext)
+        AuthContainer.init(applicationContext)
         SettingsContainer.init(applicationContext)
         SecurityContainer.init(applicationContext)
         // Start the process-lifecycle observer before the first Activity can

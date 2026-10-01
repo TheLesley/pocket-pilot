@@ -1,6 +1,7 @@
 package com.example.pocketpilot.feature.analytics.presentation.overview
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -246,7 +247,13 @@ private fun CashFlowHeadlineCard(cashFlow: CashFlowSummary) {
 @Composable
 private fun IncomeExpenseCard(cashFlow: CashFlowSummary) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+                shape = MaterialTheme.shapes.large,
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
@@ -318,7 +325,13 @@ private fun SavingsRateCard(cashFlow: CashFlowSummary) {
     val rate = cashFlow.savingsRate.coerceIn(-1f, 1f)
     val displayFraction = if (rate >= 0f) rate else 0f
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+                shape = MaterialTheme.shapes.large,
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {

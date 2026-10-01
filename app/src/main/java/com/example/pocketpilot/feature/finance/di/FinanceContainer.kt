@@ -1,6 +1,7 @@
 package com.example.pocketpilot.feature.finance.di
 
 import android.content.Context
+import com.example.pocketpilot.feature.auth.data.local.dao.AccountDao
 import com.example.pocketpilot.feature.finance.data.local.PocketPilotDatabase
 import com.example.pocketpilot.feature.finance.data.repository.BudgetRepositoryImpl
 import com.example.pocketpilot.feature.finance.data.repository.SavingsGoalRepositoryImpl
@@ -45,4 +46,7 @@ object FinanceContainer {
     val savingsGoalRepository: SavingsGoalRepository by lazy {
         SavingsGoalRepositoryImpl(requireDatabase().savingsGoalDao())
     }
+
+    val accountDao: AccountDao
+        get() = requireDatabase().accountDao()
 }

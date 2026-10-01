@@ -12,8 +12,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Receipt
@@ -33,6 +35,7 @@ import com.example.pocketpilot.core.designsystem.component.AdaptiveNavItem
 import com.example.pocketpilot.core.designsystem.component.AdaptiveNavScaffold
 import com.example.pocketpilot.core.designsystem.component.SyncStatusBar
 import com.example.pocketpilot.core.designsystem.theme.PocketPilotTheme
+import com.example.pocketpilot.core.network.NetworkConfig
 import com.example.pocketpilot.core.sync.SyncWorkStatus
 import com.example.pocketpilot.feature.auth.presentation.AuthNavHost
 import com.example.pocketpilot.feature.dashboard.presentation.HomeNavHost
@@ -59,7 +62,10 @@ class MainActivity : FragmentActivity() {
         setContent {
             PocketPilotTheme {
                 AppLockGate {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        contentWindowInsets = WindowInsets.statusBars,
+                    ) { innerPadding ->
                         Column(modifier = Modifier.padding(innerPadding)) {
                             val scheduler = remember { SyncWorkContainer.workScheduler }
                             val status: SyncWorkStatus by scheduler.status
@@ -67,6 +73,7 @@ class MainActivity : FragmentActivity() {
                             SyncStatusBar(
                                 status = status,
                                 onSyncNowClick = { scheduler.enqueueOneTimeSync() },
+                                hasRemoteBackend = NetworkConfig.hasRemoteBackend,
                             )
                             RootAppContent()
                         }

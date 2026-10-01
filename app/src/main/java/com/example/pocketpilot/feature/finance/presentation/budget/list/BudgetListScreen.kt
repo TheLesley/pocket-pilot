@@ -1,5 +1,6 @@
 package com.example.pocketpilot.feature.finance.presentation.budget.list
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -131,8 +132,16 @@ internal fun BudgetRow(progress: BudgetProgress, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
-        tonalElevation = 1.dp,
-        modifier = Modifier.fillMaxWidth()
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        tonalElevation = 0.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+                shape = MaterialTheme.shapes.medium,
+            ),
     ) {
         Column(
             modifier = Modifier.padding(PocketPilotTheme.spacing.md),

@@ -7,6 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.pocketpilot.feature.auth.data.local.dao.AccountDao
+import com.example.pocketpilot.feature.auth.data.local.entity.AccountEntity
 import com.example.pocketpilot.feature.finance.data.local.converter.FinanceTypeConverters
 import com.example.pocketpilot.feature.finance.data.local.dao.BudgetDao
 import com.example.pocketpilot.feature.finance.data.local.dao.SavingsGoalDao
@@ -19,9 +21,10 @@ import com.example.pocketpilot.feature.finance.data.local.entity.TransactionEnti
     entities = [
         TransactionEntity::class,
         BudgetEntity::class,
-        SavingsGoalEntity::class
+        SavingsGoalEntity::class,
+        AccountEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(FinanceTypeConverters::class)
@@ -30,6 +33,7 @@ abstract class PocketPilotDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
     abstract fun budgetDao(): BudgetDao
     abstract fun savingsGoalDao(): SavingsGoalDao
+    abstract fun accountDao(): AccountDao
 
     companion object {
         private const val DATABASE_NAME = "pocketpilot.db"
@@ -89,12 +93,39 @@ abstract class PocketPilotDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Introduces the `auth_accounts` table used by the local-first auth
+         * data source. Empty on first migrate — accounts are only inserted as
+         * users sign up, so no backfill is required.
+         */
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS auth_accounts (
+                        id TEXT NOT NULL PRIMARY KEY,
+                        email TEXT NOT NULL,
+                        display_name TEXT,
+                        password_hash TEXT NOT NULL,
+                        salt TEXT NOT NULL,
+                        created_at INTEGER NOT NULL,
+                        reset_code TEXT
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS index_auth_accounts_email " +
+                        "ON auth_accounts(email)"
+                )
+            }
+        }
+
         fun create(context: Context): PocketPilotDatabase = Room.databaseBuilder(
             context.applicationContext,
             PocketPilotDatabase::class.java,
             DATABASE_NAME
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 }

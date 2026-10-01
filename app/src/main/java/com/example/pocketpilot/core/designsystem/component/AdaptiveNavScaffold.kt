@@ -4,18 +4,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
+import com.example.pocketpilot.core.designsystem.theme.PocketPilotTheme
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -72,13 +77,31 @@ private fun CompactShell(items: List<AdaptiveNavItem>, modifier: Modifier, conte
     Column(modifier = modifier.fillMaxSize()) {
         Box(modifier = Modifier.weight(1f)) { content() }
         if (items.isNotEmpty()) {
-            NavigationBar {
+            val selectedColor = MaterialTheme.colorScheme.primary
+            val unselectedColor = PocketPilotTheme.extendedColors.textSecondary
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+            )
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = unselectedColor,
+                tonalElevation = 0.dp,
+                windowInsets = WindowInsets.navigationBars,
+            ) {
                 items.forEach { item ->
                     NavigationBarItem(
                         selected = item.selected,
                         onClick = item.onClick,
                         icon = { Icon(imageVector = item.icon, contentDescription = null) },
                         label = { Text(item.label) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = selectedColor,
+                            selectedTextColor = selectedColor,
+                            unselectedIconColor = unselectedColor,
+                            unselectedTextColor = unselectedColor,
+                            indicatorColor = selectedColor.copy(alpha = 0.16f),
+                        ),
                         modifier = Modifier.semantics {
                             contentDescription = item.label
                             selected = item.selected

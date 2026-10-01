@@ -1,5 +1,6 @@
 package com.example.pocketpilot.feature.settings.presentation
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
@@ -196,11 +198,17 @@ internal fun SettingsSection(title: String, content: @Composable () -> Unit) {
             fontWeight = FontWeight.SemiBold
         )
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = PocketPilotTheme.extendedColors.border,
+                    shape = MaterialTheme.shapes.large,
+                ),
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
             )
         ) {
             content()
@@ -212,7 +220,7 @@ internal fun SettingsSection(title: String, content: @Composable () -> Unit) {
 internal fun SettingsNavRow(title: String, value: String, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -272,7 +280,7 @@ internal fun SettingsSwitchRow(title: String, subtitle: String?, checked: Boolea
 internal fun SettingsSelectableRow(title: String, selected: Boolean, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(

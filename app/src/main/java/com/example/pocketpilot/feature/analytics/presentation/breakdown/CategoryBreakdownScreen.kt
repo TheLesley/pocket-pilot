@@ -1,6 +1,7 @@
 package com.example.pocketpilot.feature.analytics.presentation.breakdown
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -205,7 +206,13 @@ private fun BreakdownContent(report: AnalyticsReport) {
 @Composable
 private fun DonutCard(distribution: CategoryDistribution, currencyCode: String, slicesWithColor: List<Pair<CategoryShare, Color>>) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+                shape = MaterialTheme.shapes.large,
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {

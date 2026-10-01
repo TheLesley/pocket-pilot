@@ -1,6 +1,7 @@
 package com.example.pocketpilot.feature.analytics.presentation.trends
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -231,7 +232,13 @@ private fun LineChartCard(trend: TrendSeries, currencyCode: String) {
 @Composable
 private fun BarChartCard(trend: TrendSeries, currencyCode: String) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+                shape = MaterialTheme.shapes.large,
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
@@ -275,7 +282,13 @@ private fun BarChartCard(trend: TrendSeries, currencyCode: String) {
 private fun NetRunwayCard(trend: TrendSeries, currencyCode: String) {
     val net = trend.points.map { it.netMinorUnits.toFloat() }
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = PocketPilotTheme.extendedColors.border,
+                shape = MaterialTheme.shapes.large,
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {

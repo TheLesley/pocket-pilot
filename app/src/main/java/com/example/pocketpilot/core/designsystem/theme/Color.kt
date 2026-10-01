@@ -4,102 +4,142 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-// --- Brand palette ---------------------------------------------------------
-private val Teal10 = Color(0xFF002020)
-private val Teal20 = Color(0xFF003737)
-private val Teal30 = Color(0xFF004F4F)
-private val Teal40 = Color(0xFF006A6A)
-private val Teal80 = Color(0xFF4FD8D8)
-private val Teal90 = Color(0xFF6FF6F6)
+// ---------------------------------------------------------------------------
+// PocketPilot brand tokens — modern dark fintech palette.
+// All raw hex values live here; screens should reference these tokens (or the
+// Material3 colorScheme / PocketPilotColors) rather than hardcoding colors.
+// ---------------------------------------------------------------------------
 
-private val Slate10 = Color(0xFF0F1417)
-private val Slate20 = Color(0xFF1B2124)
-private val Slate30 = Color(0xFF2A3135)
-private val Slate40 = Color(0xFF3E464B)
-private val Slate80 = Color(0xFFBFC8CE)
-private val Slate90 = Color(0xFFDBE4EA)
+// Surfaces & structure
+val AppBackground = Color(0xFF0F1117)
+val SurfaceCard = Color(0xFF191C24)
+val SurfaceElevated = Color(0xFF222631)
+val BorderDivider = Color(0xFF272C38)
 
-private val Amber40 = Color(0xFF7C5800)
-private val Amber80 = Color(0xFFF7BD48)
+// Brand
+val PrimaryBrand = Color(0xFF6366F1)   // Indigo
+val PrimaryPressed = Color(0xFF4F46E5)
 
-// --- Neutrals --------------------------------------------------------------
-private val NeutralWhite = Color(0xFFFDFDFD)
-private val NeutralGrey95 = Color(0xFFF1F3F4)
-private val NeutralGrey20 = Color(0xFF2D3134)
-private val NeutralGrey10 = Color(0xFF171A1C)
+// Semantic finance colors
+val IncomePositive = Color(0xFF34D399)
+val ExpenseNegative = Color(0xFFFB7185)
+val ActionTransfer = Color(0xFF22D3EE)
 
-private val ErrorLight = Color(0xFFBA1A1A)
-private val ErrorDark = Color(0xFFFFB4AB)
+// Text
+val TextPrimary = Color(0xFFF8FAFC)
+val TextSecondary = Color(0xFF94A3B8)
 
-// --- Semantic finance colors (income/expense) ------------------------------
-// Exposed via PocketPilotColors so screens can reference them regardless of theme.
-private val IncomeLight = Color(0xFF1F7A3D)
-private val IncomeDark = Color(0xFF7BDE9B)
-private val ExpenseLight = Color(0xFFB3261E)
-private val ExpenseDark = Color(0xFFFFB4AB)
+// Category chart palette
+val CategoryFood = Color(0xFFF59E0B)
+val CategoryTransport = Color(0xFF38BDF8)
+val CategoryShopping = Color(0xFFA78BFA)
+val CategoryBills = Color(0xFFFB7185)
+val CategoryEntertainment = Color(0xFF34D399)
+val CategoryOther = Color(0xFF94A3B8)
 
-internal val LightColorScheme = lightColorScheme(
-    primary = Teal40,
-    onPrimary = NeutralWhite,
-    primaryContainer = Teal90,
-    onPrimaryContainer = Teal10,
-    secondary = Slate40,
-    onSecondary = NeutralWhite,
-    secondaryContainer = Slate90,
-    onSecondaryContainer = Slate10,
-    tertiary = Amber40,
-    onTertiary = NeutralWhite,
-    tertiaryContainer = Amber80,
-    onTertiaryContainer = Color(0xFF271900),
-    background = NeutralWhite,
-    onBackground = NeutralGrey10,
-    surface = NeutralWhite,
-    onSurface = NeutralGrey10,
-    surfaceVariant = NeutralGrey95,
-    onSurfaceVariant = Slate30,
-    outline = Color(0xFF6F7A7F),
-    outlineVariant = Color(0xFFBFC8CE),
-    error = ErrorLight,
-    onError = NeutralWhite
-)
+// ---------------------------------------------------------------------------
+// Material 3 color schemes
+// ---------------------------------------------------------------------------
 
 internal val DarkColorScheme = darkColorScheme(
-    primary = Teal80,
-    onPrimary = Teal10,
-    primaryContainer = Teal30,
-    onPrimaryContainer = Teal90,
-    secondary = Slate80,
-    onSecondary = Slate10,
-    secondaryContainer = Slate30,
-    onSecondaryContainer = Slate90,
-    tertiary = Amber80,
-    onTertiary = Color(0xFF412D00),
-    tertiaryContainer = Color(0xFF5E4200),
-    onTertiaryContainer = Color(0xFFFFDEA9),
-    background = NeutralGrey10,
-    onBackground = Slate90,
-    surface = NeutralGrey10,
-    onSurface = Slate90,
-    surfaceVariant = NeutralGrey20,
-    onSurfaceVariant = Slate80,
-    outline = Color(0xFF89939A),
-    outlineVariant = Color(0xFF3E464B),
-    error = ErrorDark,
-    onError = Color(0xFF690005)
+    primary = PrimaryBrand,
+    onPrimary = TextPrimary,
+    primaryContainer = PrimaryPressed,
+    onPrimaryContainer = TextPrimary,
+    secondary = ActionTransfer,
+    onSecondary = AppBackground,
+    secondaryContainer = SurfaceElevated,
+    onSecondaryContainer = TextPrimary,
+    tertiary = IncomePositive,
+    onTertiary = AppBackground,
+    tertiaryContainer = SurfaceElevated,
+    onTertiaryContainer = TextPrimary,
+    background = AppBackground,
+    onBackground = TextPrimary,
+    surface = SurfaceCard,
+    onSurface = TextPrimary,
+    surfaceVariant = SurfaceElevated,
+    onSurfaceVariant = TextSecondary,
+    surfaceTint = PrimaryBrand,
+    inverseSurface = TextPrimary,
+    inverseOnSurface = AppBackground,
+    outline = BorderDivider,
+    outlineVariant = BorderDivider,
+    error = ExpenseNegative,
+    onError = TextPrimary,
+    errorContainer = SurfaceElevated,
+    onErrorContainer = ExpenseNegative,
+    scrim = Color(0xCC000000)
+)
+
+// Light scheme retained for API completeness; the app is designed dark-first,
+// so light mode mirrors the fintech tokens rather than a bespoke light palette.
+internal val LightColorScheme = lightColorScheme(
+    primary = PrimaryBrand,
+    onPrimary = TextPrimary,
+    primaryContainer = PrimaryPressed,
+    onPrimaryContainer = TextPrimary,
+    secondary = ActionTransfer,
+    onSecondary = AppBackground,
+    secondaryContainer = SurfaceElevated,
+    onSecondaryContainer = TextPrimary,
+    tertiary = IncomePositive,
+    onTertiary = AppBackground,
+    background = AppBackground,
+    onBackground = TextPrimary,
+    surface = SurfaceCard,
+    onSurface = TextPrimary,
+    surfaceVariant = SurfaceElevated,
+    onSurfaceVariant = TextSecondary,
+    outline = BorderDivider,
+    outlineVariant = BorderDivider,
+    error = ExpenseNegative,
+    onError = TextPrimary
 )
 
 /**
  * Extra semantic colors not covered by the Material 3 scheme.
- * Access via [LocalPocketPilotColors].
+ * Access via [LocalPocketPilotColors] or `PocketPilotTheme.extendedColors`.
  */
-data class PocketPilotColors(val income: Color, val expense: Color)
+data class PocketPilotColors(
+    val income: Color,
+    val expense: Color,
+    val transfer: Color,
+    val border: Color,
+    val surfaceElevated: Color,
+    val textSecondary: Color,
+    val categoryFood: Color,
+    val categoryTransport: Color,
+    val categoryShopping: Color,
+    val categoryBills: Color,
+    val categoryEntertainment: Color,
+    val categoryOther: Color
+) {
+    val categoryPalette: List<Color>
+        get() = listOf(
+            categoryFood,
+            categoryTransport,
+            categoryShopping,
+            categoryBills,
+            categoryEntertainment,
+            categoryOther
+        )
+}
 
-internal val LightExtendedColors = PocketPilotColors(
-    income = IncomeLight,
-    expense = ExpenseLight
+private val FintechExtendedColors = PocketPilotColors(
+    income = IncomePositive,
+    expense = ExpenseNegative,
+    transfer = ActionTransfer,
+    border = BorderDivider,
+    surfaceElevated = SurfaceElevated,
+    textSecondary = TextSecondary,
+    categoryFood = CategoryFood,
+    categoryTransport = CategoryTransport,
+    categoryShopping = CategoryShopping,
+    categoryBills = CategoryBills,
+    categoryEntertainment = CategoryEntertainment,
+    categoryOther = CategoryOther
 )
 
-internal val DarkExtendedColors = PocketPilotColors(
-    income = IncomeDark,
-    expense = ExpenseDark
-)
+internal val LightExtendedColors = FintechExtendedColors
+internal val DarkExtendedColors = FintechExtendedColors

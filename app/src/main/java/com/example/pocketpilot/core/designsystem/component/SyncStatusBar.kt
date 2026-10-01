@@ -23,13 +23,19 @@ import com.example.pocketpilot.core.sync.toDisplayLabel
 
 /**
  * Compact banner surfaced above authenticated screens so users can see whether
- * the app currently has offline changes queued or in-flight. Stays hidden when
- * the status is [SyncWorkStatus.Idle] to avoid stealing focus from the
- * primary content — the intent is "quiet by default, loud on failure".
+ * the app currently has a background sync operation in flight. Stays hidden
+ * whenever no sync is actively [SyncWorkStatus.Running] — idle, enqueued, or
+ * terminal states never surface a banner — and also hides entirely when no
+ * remote backend URL is configured, since there is nothing to sync against.
  */
 @Composable
-fun SyncStatusBar(status: SyncWorkStatus, onSyncNowClick: () -> Unit, modifier: Modifier = Modifier) {
-    val visible = status !is SyncWorkStatus.Idle
+fun SyncStatusBar(
+    status: SyncWorkStatus,
+    onSyncNowClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    hasRemoteBackend: Boolean = true,
+) {
+    val visible = hasRemoteBackend && status is SyncWorkStatus.Running
     AnimatedVisibility(visible = visible, modifier = modifier) {
         val (background, foreground) = status.colors()
         Row(
