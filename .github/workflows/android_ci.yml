@@ -173,71 +173,70 @@ jobs:
           retention-days: 14
 
   build-release:
-    name: Build Signed Release APK + AAB
-    # Only run signed release builds on main pushes / tags; PRs (especially
-    # from forks) don't have access to the signing secrets.
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: ubuntu-latest
-    needs: [static-analysis, unit-tests]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      name: Build Release APK & Bundle
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+      runs-on: ubuntu-latest
+      needs: [ static-analysis, unit-tests ]
+      steps:
+          -   name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+          -   name: Set up JDK 17
+              uses: actions/setup-java@v5
+              with:
+                  distribution: temurin
+                  java-version: '17'
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.gradle/jdks
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle/libs.versions.toml') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
+          -   name: Cache Gradle
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                      ~/.gradle/jdks
+                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle/libs.versions.toml') }}
+                  restore-keys: |
+                      gradle-${{ runner.os }}-
 
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./gradlew
+          -   name: Grant execute permission to gradlew
+              run: chmod +x ./gradlew
 
-      - name: Decode release keystore
-        env:
-          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
-        run: |
-          if [ -z "${RELEASE_KEYSTORE_BASE64}" ]; then
-            echo "::error::RELEASE_KEYSTORE_BASE64 secret is not set."
-            exit 1
-          fi
-          mkdir -p "$RUNNER_TEMP/signing"
-          echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/signing/release.keystore"
-          echo "POCKETPILOT_KEYSTORE_PATH=$RUNNER_TEMP/signing/release.keystore" >> "$GITHUB_ENV"
+          -   name: Optional release keystore setup
+              env:
+                  RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+              run: |
+                  if [ -n "${RELEASE_KEYSTORE_BASE64}" ]; then
+                    echo "Keystore secret detected. Decoding..."
+                    mkdir -p "$RUNNER_TEMP/signing"
+                    echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/signing/release.keystore"
+                    echo "POCKETPILOT_KEYSTORE_PATH=$RUNNER_TEMP/signing/release.keystore" >> "$GITHUB_ENV"
+                  else
+                    echo "No keystore secret found. Building unsigned release artifacts."
+                  fi
 
-      - name: assembleRelease + bundleRelease
-        env:
-          POCKETPILOT_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
-          POCKETPILOT_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-          POCKETPILOT_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-        run: ./gradlew :app:assembleRelease :app:bundleRelease --stacktrace
+          -   name: assembleRelease + bundleRelease
+              env:
+                  POCKETPILOT_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+                  POCKETPILOT_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+                  POCKETPILOT_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+              run: ./gradlew :app:assembleRelease :app:bundleRelease --stacktrace
 
-      - name: Wipe decoded keystore
-        if: always()
-        run: rm -f "$RUNNER_TEMP/signing/release.keystore"
+          -   name: Wipe decoded keystore
+              if: always()
+              run: rm -f "$RUNNER_TEMP/signing/release.keystore"
 
-      - name: Upload signed release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: pocketpilot-release-apk
-          path: app/build/outputs/apk/release/*.apk
-          if-no-files-found: error
-          retention-days: 30
+          -   name: Upload release APK
+              uses: actions/upload-artifact@v4
+              with:
+                  name: pocketpilot-release-apk
+                  path: app/build/outputs/apk/release/*.apk
+                  if-no-files-found: error
+                  retention-days: 30
 
-      - name: Upload signed release AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: pocketpilot-release-aab
-          path: app/build/outputs/bundle/release/*.aab
-          if-no-files-found: error
-          retention-days: 30
+          -   name: Upload release AAB
+              uses: actions/upload-artifact@v4
+              with:
+                  name: pocketpilot-release-aab
+                  path: app/build/outputs/bundle/release/*.aab
+                  if-no-files-found: error
+                  retention-days: 30
