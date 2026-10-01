@@ -20,7 +20,6 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
-import com.example.pocketpilot.core.designsystem.theme.PocketPilotTheme
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.example.pocketpilot.core.designsystem.theme.PocketPilotTheme
 
 /**
  * Primary navigation destination surfaced by [AdaptiveNavScaffold].
@@ -39,12 +39,7 @@ import androidx.compose.ui.unit.dp
  * `label` doubles as the accessibility content description for the item so
  * TalkBack announces the destination name when the item is focused.
  */
-data class AdaptiveNavItem(
-    val label: String,
-    val icon: ImageVector,
-    val selected: Boolean,
-    val onClick: () -> Unit,
-)
+data class AdaptiveNavItem(val label: String, val icon: ImageVector, val selected: Boolean, val onClick: () -> Unit,)
 
 /**
  * Adaptive shell that renders top-level navigation appropriate to the current

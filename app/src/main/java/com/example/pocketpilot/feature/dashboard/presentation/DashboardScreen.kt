@@ -272,13 +272,7 @@ private fun MonthlyTotalsRow(summary: DashboardSummary) {
 }
 
 @Composable
-private fun MonthlyTotalCard(
-    label: String,
-    amountText: String,
-    icon: ImageVector,
-    accent: Color,
-    modifier: Modifier = Modifier
-) {
+private fun MonthlyTotalCard(label: String, amountText: String, icon: ImageVector, accent: Color, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,

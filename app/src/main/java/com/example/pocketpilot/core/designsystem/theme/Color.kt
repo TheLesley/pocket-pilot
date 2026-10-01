@@ -17,7 +17,7 @@ val SurfaceElevated = Color(0xFF222631)
 val BorderDivider = Color(0xFF272C38)
 
 // Brand
-val PrimaryBrand = Color(0xFF6366F1)   // Indigo
+val PrimaryBrand = Color(0xFF6366F1) // Indigo
 val PrimaryPressed = Color(0xFF4F46E5)
 
 // Semantic finance colors

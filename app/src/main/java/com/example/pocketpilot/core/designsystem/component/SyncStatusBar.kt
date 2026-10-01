@@ -29,12 +29,7 @@ import com.example.pocketpilot.core.sync.toDisplayLabel
  * remote backend URL is configured, since there is nothing to sync against.
  */
 @Composable
-fun SyncStatusBar(
-    status: SyncWorkStatus,
-    onSyncNowClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    hasRemoteBackend: Boolean = true,
-) {
+fun SyncStatusBar(status: SyncWorkStatus, onSyncNowClick: () -> Unit, modifier: Modifier = Modifier, hasRemoteBackend: Boolean = true,) {
     val visible = hasRemoteBackend && status is SyncWorkStatus.Running
     AnimatedVisibility(visible = visible, modifier = modifier) {
         val (background, foreground) = status.colors()

@@ -99,11 +99,11 @@ fun HomeNavHost(controller: HomeNavController = rememberHomeNavController()) {
             (
                 slideInHorizontally(animationSpec = tween(220)) { it / 6 } +
                     fadeIn(animationSpec = tween(220))
-            ) togetherWith
+                ) togetherWith
                 (
                     slideOutHorizontally(animationSpec = tween(180)) { -it / 8 } +
                         fadeOut(animationSpec = tween(180))
-                )
+                    )
         },
     ) { current ->
         when (current) {
