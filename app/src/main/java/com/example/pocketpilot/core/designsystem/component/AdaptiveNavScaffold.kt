@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.example.pocketpilot.core.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement

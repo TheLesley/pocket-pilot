@@ -16,7 +16,8 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\HP\\\\AndroidStudioProjects\\\\PocketPilot\\\\config\" -Recurse | ForEach-Object { $_.FullName.Replace\\(\"C:\\\\Users\\\\HP\\\\AndroidStudioProjects\\\\PocketPilot\\\\\", \"\"\\) })",
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\HP\\\\AndroidStudioProjects\\\\PocketPilot\\\\app\\\\src\\\\main\\\\java\\\\com\\\\example\\\\pocketpilot\\\\feature\\\\finance\\\\data\\\\remote\" -Recurse | ForEach-Object { $_.FullName.Replace\\(\"C:\\\\Users\\\\HP\\\\AndroidStudioProjects\\\\PocketPilot\\\\\", \"\"\\) })",
       "Bash(./gradlew compileDebugKotlin *)",
-      "Bash(./gradlew :app:compileDebugKotlin :app:kspDebugKotlin)"
+      "Bash(./gradlew :app:compileDebugKotlin :app:kspDebugKotlin)",
+      "Bash(./gradlew detekt *)"
     ]
   }
 }

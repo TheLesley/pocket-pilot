@@ -88,6 +88,7 @@ fun rememberHomeNavController(): HomeNavController {
     return remember(state) { HomeNavController(state) }
 }
 
+@Suppress("LongMethod")
 @Composable
 fun HomeNavHost(controller: HomeNavController = rememberHomeNavController()) {
     val destination = controller.destination
